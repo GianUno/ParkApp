@@ -21,8 +21,45 @@ const plateValidator = [
 
 const modelValidator = [
   validate({
-    validator: '',
-    arguments: [,],
-    message: ''
+    validator: 'isLength',
+    arguments: [0, 20],
+    message: 'Modelo não pode passar de {ARGS[1]}.'
   }),
 ];
+
+const colorValidator = [
+  validate({
+    validator: 'isLength',
+    arguments: [0, 15],
+    message: 'Cor não pode passar de {ARGS[1]}.'
+  })
+];
+
+
+const SpotSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'Nome é obrigatório.'],
+    validate: nameValidator
+  },
+  plate: {
+    type: String,
+    required: [true, 'Placa é obrigatório.'],
+    unique: true,
+    validate: plateValidator
+  },
+  model: {
+    type: String,
+    required: [true, 'Modelo é obrigatório.'],
+    validate: modelValidator,
+    message: 'Modelo é obrigatório.'
+  },
+  color: {
+    type: String,
+    validate: colorValidator
+  }
+});
+
+SpotSchema.plugin(unique, { message: 'Carro já cadastrado.' });
+
+const Spot = module.exports = mongoose.model('spot', SpotSchema);
