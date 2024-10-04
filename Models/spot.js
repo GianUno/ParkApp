@@ -35,6 +35,13 @@ const colorValidator = [
   })
 ];
 
+const costValidator = [
+  validate({
+    validator: Number.isInteger,
+    message: 'Valor não é válido.'
+  })
+];
+
 
 const SpotSchema = new mongoose.Schema({
   name: {
@@ -51,12 +58,16 @@ const SpotSchema = new mongoose.Schema({
   model: {
     type: String,
     required: [true, 'Modelo é obrigatório.'],
-    validate: modelValidator,
-    message: 'Modelo é obrigatório.'
+    validate: modelValidator
   },
   color: {
     type: String,
     validate: colorValidator
+  },
+  cost: {
+    type: Number,
+    required: [true, 'Valor é obrigatório.'],
+    validade: costValidator
   }
 });
 
