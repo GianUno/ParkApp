@@ -102,5 +102,51 @@ router.put('/:id', (req, res) => {
     cost: sanitizeCost(req.body.cost)
   };
 
-  Spot.findOneAndUpdate({ })
-})
+  Spot.findOneAndUpdate({ _id: req.params.id }, updatedSpot, { runValidators: true, context: 'query' })
+    .then((oldResult) => {
+      Spot.findOne({ _id: req.params.id })
+        .then((newResult) => {
+          res.json({
+            success: true,
+            msg: `Atualizado com sucesso!`,
+            result: {
+              _id: newResult._id,
+              name: newResult.name,
+              plate: newResult.plate,
+              model: newResult.model,
+              color: newResult.color,
+              cost: newResult.cost
+            }
+          });
+        })
+        .catch((err) => {
+          res.status(500).json({ success: false, msg: `Algo deu errado. ${err}` });
+          return;
+        });
+    })
+    .catch((err) => {
+      if (err.errors) {
+      if (err.errors.name) {
+        res.status(400).json({ success: false, msg: err.errors.name.message });
+        return;
+      }
+      if (err.errors.plate) {
+        res.status(400).json({ success: false, msg: err.errors.plate.message });
+        return;
+      }
+      if (err.errors.model) {
+        res.status(400).json({ success: false, msg: err.errors.model.message });
+        return;
+      }
+      if (err.errors.color) {
+        res.status(400).json({ success: false, msg: err.errors.color.message });
+        return;
+      }
+      if (err.errors.cost) {
+        res.status(400).json({ success: false, msg: err.errors.cost.message });
+        return;
+      }
+      res.status(500).json({ success: false, msg: `Algo deu errado. ${err}` });
+    }
+  });
+});
