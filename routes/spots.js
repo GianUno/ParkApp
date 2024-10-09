@@ -150,3 +150,45 @@ router.put('/:id', (req, res) => {
     }
   });
 });
+
+
+// DELETE
+router.delete('/:id', (req, res) => {
+
+  Spot.findByIdAndRemove(req.params.id)
+    .then((result) => {
+      res.json({
+        success: true,
+        msg: 'Deletado.',
+        result: {
+          _id: result._id,
+          name: result.name,
+          plate: result.plate,
+          model: result.model,
+          color: result.color,
+          cost: result.cost
+        }
+      });
+    })
+    .catch((err) => {
+      res.status(404).json({ success: false, msg: 'Não foi encontrado para deletar.'});
+    });
+});
+
+module.exports = router;
+sanitizeName = (name) => {
+  return stringCapitalizeName(name);
+}
+sanitizePlate = (plate) => {
+  return plate.toUpperCase(plate);
+}
+sanitizeModel = (model) => {
+  return model.toLowerCase(model);
+}
+sanitizeColor = (color) => {
+  return color.toLowerCase(color);
+}
+sanitizeCost = (cost) => {
+  if (isNaN(cost) && cost != '') return '';
+  return (cost === '') ? cost : parseInt(cost);
+}
