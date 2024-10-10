@@ -37,7 +37,9 @@ const colorValidator = [
 
 const costValidator = [
   validate({
-    validator: Number.isInteger,
+    validator: function(value) {
+      return !isNaN(value) && value >= 0;
+    },
     message: 'Valor não é válido.'
   })
 ];
