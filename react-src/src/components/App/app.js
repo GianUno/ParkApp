@@ -93,7 +93,7 @@ class App extends Component {
         <Container>
         <ModalSpot
           headerTitle='Add spot'
-          buttonTriggerTitle='Add New'
+          buttonTriggerTitle='Adicionar Vaga'
           buttonSubmitTitle='Add'
           buttonColor='green'
           onSpotAdded={this.handlespotAdded}

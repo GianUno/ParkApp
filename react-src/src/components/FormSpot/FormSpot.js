@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Message, Button, Form, Select } from 'semantic-ui-react';
+import { Message, Button, Form } from 'semantic-ui-react';
 import axios from 'axios';
 
 class FormSpot extends Component {
@@ -19,7 +19,6 @@ class FormSpot extends Component {
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -46,9 +45,9 @@ class FormSpot extends Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
-    if (name === 'cost') {
+    /*if (name === 'cost') {
       value = value.replace(/[^\d.]/g, '');
-    }
+    }*/
 
     this.setState({ [name]: value });
   }
@@ -133,7 +132,7 @@ class FormSpot extends Component {
           onChange = {this.handleInputChange}
         />
         <Form.Input
-          label = 'Plate'
+          label = 'Placa'
           type = 'text'
           placeholder = 'ABC1D23'
           name = 'plate'
@@ -143,7 +142,7 @@ class FormSpot extends Component {
           onChange = {this.handleInputChange}
         />
         <Form.Input
-          label = 'Model'
+          label = 'Modelo'
           type = 'text'
           placeholder = 'Corsa'
           name = 'model'
@@ -153,7 +152,7 @@ class FormSpot extends Component {
           onChange = {this.handleInputChange}
         />
         <Form.Input
-          label = 'Color'
+          label = 'Cor'
           type = 'text'
           placeholder = 'Cinza'
           name = 'color'
@@ -163,13 +162,19 @@ class FormSpot extends Component {
           onChange = {this.handleInputChange}
         />
         <Form.Input
-          label = 'Cost'
+          label = 'Custo'
           type = 'numeric'
           placeholder = 'R$10.00/h'
           name = 'cost'
           required
           value = {this.state.cost}
           onChange = {this.handleInputChange}
+        />
+        <Message
+          success
+          color='green'
+          header='Nice!'
+          content={formSuccessMessage}
         />
         <Message
           warning

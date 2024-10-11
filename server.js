@@ -18,7 +18,7 @@ db.on('open', () => {
   console.log('Conectado com o banco.')
 })
 
-db.on('erro', (err) => {
+db.on('error', (err) => {
   console.log(`Erro na conexão ao banco: ${err}`);
 });
 
@@ -50,7 +50,7 @@ const io = socket(server, {
 });
 
 let online = 0;
-io.on('conexão', (socket) => {
+io.on('connection', (socket) => {
   online++;
   console.log(`Socket ${socket.id} conectado.`);
   console.log(`Online: ${online}`);

@@ -1,4 +1,4 @@
 module.exports = {
-  db: 'mongodb://localhost/mern-crud',
+  db: 'mongodb://localhost/park-app',
   react_app_url: "http://localhost:4200"
 };
