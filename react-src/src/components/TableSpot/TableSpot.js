@@ -16,11 +16,11 @@ class TableSpot extends Component {
         <Table.Cell>{spot.plate}</Table.Cell>
         <Table.Cell>{spot.model}</Table.Cell>
         <Table.Cell>{spot.color}</Table.Cell>
-        <Table.Cell>{spot.cost}</Table.Cell>
+        <Table.Cell>R${spot.cost}</Table.Cell>
         <Table.Cell>
           <ModalSpot
             headerTitle='Editar Vaga'
-            buttonTriggerTitle='Edit'
+            buttonTriggerTitle='Editar'
             buttonSubmitTitle='Salvar'
             buttonColor='blue'
             spotID={spot._id}
@@ -30,7 +30,7 @@ class TableSpot extends Component {
           />
           <ModalConfirmDelete
             headerTitle='Deletar Vaga'
-            buttonTriggerTitle='Delete'
+            buttonTriggerTitle='Deletar'
             buttonColor='black'
             spot={spot}
             onSpotDeleted={this.props.onSpotDeleted}

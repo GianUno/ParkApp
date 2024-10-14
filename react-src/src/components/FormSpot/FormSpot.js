@@ -174,7 +174,7 @@ class FormSpot extends Component {
         <Form.Input
           label = 'Custo'
           type = 'numeric'
-          placeholder = 'R$10.00/h'
+          placeholder = '10.00'
           name = 'cost'
           required
           value = {this.state.cost}
