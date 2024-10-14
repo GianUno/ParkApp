@@ -14,7 +14,7 @@ const nameValidator = [
 const plateValidator = [
   validate({
     validator: 'isLength',
-    arguments: [0, 4],
+    arguments: [0, 7],
     message: 'Tamanho da placa inválido.'
   }),
 ];
@@ -69,7 +69,7 @@ const SpotSchema = new mongoose.Schema({
   cost: {
     type: Number,
     required: [true, 'Valor é obrigatório.'],
-    validade: costValidator
+    validate: costValidator
   }
 });
 

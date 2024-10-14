@@ -23,7 +23,7 @@ class FormSpot extends Component {
   }
 
   componentWillMount() {
-    if (this.props.SpotID) {
+    if (this.props.spotID) {
       axios.get(`${this.props.server}/api/spots/${this.props.spotID}`)
       .then((response) => {
         this.setState({
@@ -54,6 +54,16 @@ class FormSpot extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+
+
+    if (!this.state.name || !this.state.plate || !this.state.model || !this.state.color || !this.state.cost) {
+      this.setState({
+        formClassName: 'warning',
+        formErrorMessage: 'Porfavor preencha todos os campos.'
+      });
+      return;
+    }
+
 
     const spot = {
       name: this.state.name,

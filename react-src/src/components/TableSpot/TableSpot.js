@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table } from 'semantic-ui-react';
 
-import ModalSpot from '../ModalUser/ModalSpot';
+import ModalSpot from '../ModalSpot/ModalSpot';
 import ModalConfirmDelete from '../ModalConfirmDelete/ModalConfirmDelete';
 
 class TableSpot extends Component {
@@ -16,6 +16,7 @@ class TableSpot extends Component {
         <Table.Cell>{spot.plate}</Table.Cell>
         <Table.Cell>{spot.model}</Table.Cell>
         <Table.Cell>{spot.color}</Table.Cell>
+        <Table.Cell>{spot.cost}</Table.Cell>
         <Table.Cell>
           <ModalSpot
             headerTitle='Editar Vaga'

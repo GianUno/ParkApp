@@ -3,8 +3,8 @@ import { Container } from 'semantic-ui-react';
 import axios from 'axios';
 import io from 'socket.io-client';
 
-import TableSpot from '../TableUser/TableUser';
-import ModalSpot from '../ModalUser/ModalSpot';
+import TableSpot from '../TableSpot/TableSpot';
+import ModalSpot from '../ModalSpot/ModalSpot';
 
 import './App.css';
 
@@ -16,7 +16,7 @@ class App extends Component {
     this.socket = io(this.server);
 
     this.state = {
-      users: [],
+      spots: [],
       online: 0
     }
 
@@ -55,7 +55,7 @@ class App extends Component {
   handleSpotUpdated(spot) {
     let spots = this.state.spots.slice();
 
-    let i = spots.findIndex(s => s._id === user._id)
+    let i = spots.findIndex(s => s._id === spot._id)
 
     if (spots.length > i) { spots[i] = spot }
 
@@ -91,15 +91,23 @@ class App extends Component {
          </div>
         </div>
         <Container>
-        <ModalSpot
-          headerTitle='Add spot'
-          buttonTriggerTitle='Adicionar Vaga'
-          buttonSubmitTitle='Add'
-          buttonColor='green'
-          onSpotAdded={this.handlespotAdded}
-          server={this.server}
-          socket={this.socket}
-        />
+          <ModalSpot
+            headerTitle='Add Spot'
+            buttonTriggerTitle='Add New'
+            buttonSubmitTitle='Add'
+            buttonColor='green'
+            onSpotAdded={this.handleSpotAdded}
+            server={this.server}
+            socket={this.socket}
+          />
+          <em id='online'>{onlineText}</em>
+          <TableSpot
+            onSpotUpdated={this.handleSpotUpdated}
+            onSpotDeleted={this.handleSpotDeleted}
+            spots={this.state.spots}
+            server={this.server}
+            socket={this.socket}
+          />
       </Container>
       </div>
     );

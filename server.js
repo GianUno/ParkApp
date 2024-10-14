@@ -34,6 +34,8 @@ if (process.env.CORS) {
   app.use(cors());
 }
 
+app.use('/api/spots', require('./routes/spots'));
+
 app.use((err, req, res, next) => {
   if (res.headersSent) return next(err);
 });
