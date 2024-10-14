@@ -21,7 +21,7 @@ class ModalConfirmDelete extends Component {
 
   handleSubmit(e) {
 
-    let params = e.target.getAttribute('data-userID');
+    let params = e.target.getAttribute('data-spotID');
 
     axios({
       method: 'delete',

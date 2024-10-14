@@ -40,7 +40,7 @@ router.get('/', (req, res) => {
 
 // CREATE
 router.post('/', postLimiter, (req, res) => {
-  
+
   let newSpot = new Spot({
     name: sanitizeName(req.body.name),
     plate: sanitizePlate(req.body.plate),
@@ -65,6 +65,7 @@ router.post('/', postLimiter, (req, res) => {
       });
     })
     .catch((err) => {
+      console.log(err);
       if (err.errors) {
       if (err.errors.name) {
         res.status(400).json({ success: false, msg: err.errors.name.message });
@@ -180,15 +181,15 @@ sanitizeName = (name) => {
   return stringCapitalizeName(name);
 }
 sanitizePlate = (plate) => {
-  return plate.toUpperCase(plate);
+  return plate.toUpperCase();
 }
 sanitizeModel = (model) => {
-  return model.toLowerCase(model);
+  return model.toLowerCase();
 }
 sanitizeColor = (color) => {
-  return color.toLowerCase(color);
+  return color.toLowerCase();
 }
 sanitizeCost = (cost) => {
   if (isNaN(cost) && cost != '') return '';
-  return (cost === '') ? cost : parseInt(cost);
+  return (cost === '') ? cost : parseFloat(cost);
 }

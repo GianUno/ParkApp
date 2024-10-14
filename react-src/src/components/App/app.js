@@ -73,9 +73,9 @@ class App extends Component {
     let onlineText = "";
 
     if (peopleOnline < 1) {
-      onlineText = 'Ninguém online.';
+      onlineText = '';
     } else {
-      onlineText = peopleOnline > 1 ? `${this.state.online - 1} pessoas online` : `${this.state.online - 1} pessoa online.`;
+      onlineText = peopleOnline > 1 ? `` : ``;
     }
 
     return (
@@ -83,11 +83,6 @@ class App extends Component {
         <div className='App'>
           <div className='App-header'>
           <h1 className='App-intro'>PARK</h1>
-          <p>
-            yesyes
-            <br/>
-            parkpark
-          </p>
          </div>
         </div>
         <Container>
