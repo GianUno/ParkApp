@@ -70,6 +70,26 @@ const SpotSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'Valor é obrigatório.'],
     validate: costValidator
+  },
+  status: {
+    type: String,
+    enum: ['ocupado', 'finalizado'],
+    default: 'ocupado'
+  },
+  startTime: {
+    type: Date,
+    default: Date.now
+  },
+  endTime: {
+    type: Date
+  },
+  isFinished: {
+    type: Boolean,
+    default: false
+  },
+  finalCost: {
+    type: Number,
+    validate: costValidator
   }
 });
 

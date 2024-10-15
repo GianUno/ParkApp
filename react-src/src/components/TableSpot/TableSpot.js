@@ -3,6 +3,7 @@ import { Table } from 'semantic-ui-react';
 
 import ModalSpot from '../ModalSpot/ModalSpot';
 import ModalConfirmDelete from '../ModalConfirmDelete/ModalConfirmDelete';
+import ModalCheckout from '../ModalCheckout/ModalCheckout';
 
 class TableSpot extends Component {
 
@@ -16,7 +17,7 @@ class TableSpot extends Component {
         <Table.Cell>{spot.plate}</Table.Cell>
         <Table.Cell>{spot.model}</Table.Cell>
         <Table.Cell>{spot.color}</Table.Cell>
-        <Table.Cell>R${spot.cost}</Table.Cell>
+        <Table.Cell>R${spot.cost}/H</Table.Cell>
         <Table.Cell>
           <ModalSpot
             headerTitle='Editar Vaga'
@@ -37,6 +38,15 @@ class TableSpot extends Component {
             server={this.props.server}
             socket={this.props.socket}
           />
+          <ModalCheckout
+            headerTitle='Finalizar Vaga'
+            buttonTriggerTitle='Finalizar'
+            buttonColor='green'
+            spot={spot}
+            onSpotUpdated={this.props.onSpotUpdated}
+            server={this.props.server}
+            socket={this.props.socket}
+          />            
         </Table.Cell>
       </Table.Row>
     );
@@ -52,7 +62,8 @@ class TableSpot extends Component {
             <Table.HeaderCell>Placa</Table.HeaderCell>
             <Table.HeaderCell>Modelo</Table.HeaderCell>
             <Table.HeaderCell>Cor</Table.HeaderCell>
-            <Table.HeaderCell>Valor/h</Table.HeaderCell>
+            <Table.HeaderCell>Valor/H</Table.HeaderCell>
+            <Table.HeaderCell>Ações</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>

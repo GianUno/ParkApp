@@ -47,6 +47,10 @@ router.post('/', postLimiter, (req, res) => {
     model: sanitizeModel(req.body.model),
     color: sanitizeColor(req.body.color),
     cost: sanitizeCost(req.body.cost),
+    status: req.body.status || 'ocupado',
+    startTime: req.body.startTime || Date.now(),
+    endTime: req.body.endTime || Date.now(),
+    finalCost: 0
   });
 
   newSpot.save()
@@ -167,7 +171,11 @@ router.delete('/:id', (req, res) => {
           plate: result.plate,
           model: result.model,
           color: result.color,
-          cost: result.cost
+          cost: result.cost,
+          status: result.status,
+          startTime: result.startTime,
+          endTime: result.endTime,
+          finalCost: result.finalCost
         }
       });
     })
@@ -175,6 +183,34 @@ router.delete('/:id', (req, res) => {
       res.status(404).json({ success: false, msg: 'Não foi encontrado para deletar.'});
     });
 });
+
+
+router.put('/checkout/:id', (req, res) => {
+  Spot.findById(req.params.id)
+    .then(spot => {
+      if (!spot) {
+        return res.status(404).json({ success: false, msg: "Vaga não encontrada" });
+      }
+
+      const endTime = Date.now();
+      const durationInHours = (endTime - new Date(spot.startTime)) / (1000 * 60 * 60); // Converte para horas
+      const finalCost = durationInHours * spot.cost; // Calcula o custo final
+
+      spot.endTime = endTime;
+      spot.isFinished = true;
+      spot.finalCost = finalCost.toFixed(2); // Armazena o custo total
+      spot.status = 'finalizado';
+
+      return spot.save();
+    })
+    .then(updatedSpot => {
+      res.json({ success: true, result: updatedSpot });
+    })
+    .catch(err => {
+      res.status(500).json({ success: false, msg: `Erro ao finalizar a vaga: ${err.message}` });
+    });
+});
+
 
 module.exports = router;
 sanitizeName = (name) => {
