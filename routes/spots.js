@@ -16,6 +16,19 @@ const postLimiter = rateLimit({
   }
 })
 
+
+router.get('/finished', (req, res) => {
+  Spot.find({ isFinished: true })
+    .then(result => {
+      res.json(result);
+    })
+    .catch(err => {
+      console.error('Erro ao buscar vagas:', err);
+      res.status(500).json({ success: false, msg: `Algo deu errado. ${err}` });
+    });
+});
+
+
 // READ ONE
 router.get('/:id', (req, res) => {
   Spot.findById(req.params.id)
@@ -210,6 +223,7 @@ router.put('/checkout/:id', (req, res) => {
       res.status(500).json({ success: false, msg: `Erro ao finalizar a vaga: ${err.message}` });
     });
 });
+
 
 
 module.exports = router;

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 import axios from 'axios';
 import io from 'socket.io-client';
 
 import TableSpot from '../TableSpot/TableSpot';
 import ModalSpot from '../ModalSpot/ModalSpot';
+import FinishedSpots from '../TableSpotF/TableSpotF';
 
 import './App.css';
 
@@ -13,7 +15,7 @@ class App extends Component {
     super();
 
     this.server = process.env.REACT_APP_API_URL || '';
-    this.socket = io(this.server);
+    //this.socket = io(this.server);
 
     this.state = {
       spots: [],
@@ -28,11 +30,11 @@ class App extends Component {
 
   componentDidMount() {
     this.fetchSpots();
-    this.socket.on('User entra', data => this.setState({ online: data }));
-    this.socket.on('User sai', data => this.setState({ online: data }));
-    this.socket.on('Add', data => this.handleSpotAdded(data));
-    this.socket.on('Update', data => this.handleSpotUpdated(data));
-    this.socket.on('Delete', data => this.handleSpotDeleted(data));
+    //this.socket.on('User entra', data => this.setState({ online: data }));
+    //this.socket.on('User sai', data => this.setState({ online: data }));
+    //this.socket.on('Add', data => this.handleSpotAdded(data));
+    //this.socket.on('Update', data => this.handleSpotUpdated(data));
+    //this.socket.on('Delete', data => this.handleSpotDeleted(data));
   }
 
   fetchSpots() {
@@ -78,33 +80,58 @@ class App extends Component {
       onlineText = peopleOnline > 1 ? `` : ``;
     }
 
+
+    function NoMatch() {
+      return (
+        <div style={{ padding: 20 }}>
+          <h2>404: Page Not Found</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adip.</p>
+        </div>
+      );
+    }
+
+    
     return (
-      <div>
+      <Router>
         <div className='App'>
           <div className='App-header'>
-          <h1 className='App-intro'>PARK</h1>
-         </div>
+            <h1 className='App-intro'>PARK</h1>
+          </div>
         </div>
         <Container>
-          <ModalSpot
-            headerTitle='Add Spot'
-            buttonTriggerTitle='Adicionar Ocupante'
-            buttonSubmitTitle='Add'
-            buttonColor='green'
-            onSpotAdded={this.handleSpotAdded}
-            server={this.server}
-            socket={this.socket}
-          />
-          <em id='online'>{onlineText}</em>
-          <TableSpot
-            onSpotUpdated={this.handleSpotUpdated}
-            onSpotDeleted={this.handleSpotDeleted}
-            spots={this.state.spots}
-            server={this.server}
-            socket={this.socket}
-          />
-      </Container>
-      </div>
+          <Routes>
+            {/* Rota da página principal */}
+            <Route path="/" element={
+              <>
+                <ModalSpot
+                  headerTitle='Add Spot'
+                  buttonTriggerTitle='Adicionar Ocupante'
+                  buttonSubmitTitle='Add'
+                  buttonColor='green'
+                  onSpotAdded={this.handleSpotAdded}
+                  server={this.server}
+                  socket={this.socket}
+                />
+                <em id='online'>{onlineText}</em>
+                <TableSpot
+                  onSpotUpdated={this.handleSpotUpdated}
+                  onSpotDeleted={this.handleSpotDeleted}
+                  spots={this.state.spots}
+                  server={this.server}
+                  socket={this.socket}
+                />
+              </>
+            } />
+            {/* Rota para vagas finalizadas */}
+            <Route path="/finished" element={
+              <>
+                <FinishedSpots server={this.server} />
+              </>
+            } />
+            <Route path='/*' element={<NoMatch />} />
+          </Routes>
+        </Container>
+      </Router>
     );
   }
 }

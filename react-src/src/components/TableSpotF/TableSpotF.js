@@ -1,46 +1,57 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Button } from 'semantic-ui-react';
+import React, { Component } from 'react';
 import axios from 'axios';
+import { Table } from 'semantic-ui-react';
 
-const FinishedSpots = ({ server }) => {
-  const [finishedSpots, setFinishedSpots] = useState([]);
+class FinishedSpots extends Component {
+  constructor(props) {
+    super(props);
 
-  useEffect(() => {
-    // Fetch vagas finalizadas
-    axios.get(`${server}/api/spots/finished`)
+    this.state = {
+      finishedSpots: []
+    };
+  }
+
+  componentDidMount() {
+    this.fetchFinishedSpots();
+  }
+
+  fetchFinishedSpots() {
+    axios.get(`${this.props.server}/api/spots/finished`)
       .then((response) => {
-        setFinishedSpots(response.data);
+        this.setState({ finishedSpots: response.data });
       })
-      .catch(err => console.log(err));
-  }, [server]);
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
-  return (
-    <div>
-      <h2>Vagas Finalizadas</h2>
-      <Table>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Nome</Table.HeaderCell>
-            <Table.HeaderCell>Placa</Table.HeaderCell>
-            <Table.HeaderCell>Custo Final</Table.HeaderCell>
-            <Table.HeaderCell>QR Code</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {finishedSpots.map(spot => (
-            <Table.Row key={spot._id}>
-              <Table.Cell>{spot.name}</Table.Cell>
-              <Table.Cell>{spot.plate}</Table.Cell>
-              <Table.Cell>R$ {spot.finalCost}</Table.Cell>
-              <Table.Cell>
-                <Button onClick={() => generateQRCode(spot._id)}>Gerar QR Code</Button>
-              </Table.Cell>
+  render() {
+    const { finishedSpots } = this.state;
+
+    return (
+      <div>
+        <h2>Vagas Finalizadas</h2>
+        <Table>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Nome</Table.HeaderCell>
+              <Table.HeaderCell>Placa</Table.HeaderCell>
+              <Table.HeaderCell>Custo Final</Table.HeaderCell>
             </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
-    </div>
-  );
+          </Table.Header>
+          <Table.Body>
+            {finishedSpots.map((spot) => (
+              <Table.Row key={spot._id}>
+                <Table.Cell>{spot.name}</Table.Cell>
+                <Table.Cell>{spot.plate}</Table.Cell>
+                <Table.Cell>R$ {spot.finalCost}</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
+    );
+  }
 }
 
 export default FinishedSpots;
