@@ -36,12 +36,12 @@ if (process.env.CORS) {
 
 app.use('/api/spots', require('./routes/spots'));
 
-app.use(express.static(path.join(__dirname, 'client/public')));
+// app.use(express.static(path.join(__dirname, 'client/public')));
 
-// Qualquer rota não-API deve ser redirecionada para o React Router
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/public', 'index.html'));
-});
+// // Qualquer rota não-API deve ser redirecionada para o React Router
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'client/public', 'index.html'));
+// });
 
 app.use((err, req, res, next) => {
   if (res.headersSent) return next(err);
