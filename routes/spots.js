@@ -29,6 +29,39 @@ router.get('/finished', (req, res) => {
 });
 
 
+
+// DELETE
+router.delete('/finished/:id', (req, res) => {
+
+  Spot.findByIdAndRemove(req.params.id)
+    .then((result) => {
+      res.json({
+        success: true,
+        msg: 'Deletado.',
+        result: {
+          _id: result._id,
+          name: result.name,
+          plate: result.plate,
+          model: result.model,
+          color: result.color,
+          cost: result.cost,
+          status: result.status,
+          startTime: result.startTime,
+          endTime: result.endTime,
+          durationTime: result.durationTime,
+          finalCost: result.finalCost
+        }
+      });
+    })
+    .catch((err) => {
+      res.status(404).json({ success: false, msg: 'Não foi encontrado para deletar.'});
+    });
+});
+
+
+
+
+
 // READ ONE
 router.get('/:id', (req, res) => {
   Spot.findById(req.params.id)
@@ -40,9 +73,12 @@ router.get('/:id', (req, res) => {
     });
 });
 
+
+
 // READ ALL
 router.get('/', (req, res) => {
-  Spot.find({})
+  const isFinished = req.query.isFinished === 'true';
+  Spot.find({ isFinished })
     .then((result) => {
       res.json(result);
     })
@@ -50,6 +86,8 @@ router.get('/', (req, res) => {
       res.status(500).json({ success: false, msg: `Algo deu errado. ${err}` });
     });
 });
+
+
 
 // CREATE
 router.post('/', postLimiter, (req, res) => {
@@ -63,6 +101,7 @@ router.post('/', postLimiter, (req, res) => {
     status: req.body.status || 'ocupado',
     startTime: req.body.startTime || Date.now(),
     endTime: req.body.endTime || Date.now(),
+    durationTime: req.body.durationTime || 0,
     finalCost: 0
   });
 
@@ -188,6 +227,7 @@ router.delete('/:id', (req, res) => {
           status: result.status,
           startTime: result.startTime,
           endTime: result.endTime,
+          durationTime: result.durationTime,
           finalCost: result.finalCost
         }
       });
@@ -209,10 +249,26 @@ router.put('/checkout/:id', (req, res) => {
       const durationInHours = (endTime - new Date(spot.startTime)) / (1000 * 60 * 60); // Converte para horas
       const finalCost = durationInHours * spot.cost; // Calcula o custo final
 
+
+
+      function decimalParaHora(decimal) {
+        // Separar a parte inteira das horas
+        let horas = Math.floor(decimal);
+        // Calcular os minutos a partir da parte decimal
+        let minutos = Math.floor((decimal - horas) * 60);
+        // Calcular os segundos a partir da parte decimal dos minutos
+        let segundos = Math.round((((decimal - horas) * 60) - minutos) * 60);
+    
+        // Formatar para HH:MM:SS
+        return `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+      }
+
+
       spot.endTime = endTime;
       spot.isFinished = true;
       spot.finalCost = finalCost.toFixed(2); // Armazena o custo total
       spot.status = 'finalizado';
+      spot.durationTime = decimalParaHora(durationInHours);
 
       return spot.save();
     })

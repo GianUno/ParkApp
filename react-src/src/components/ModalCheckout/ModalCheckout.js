@@ -22,7 +22,10 @@ class ModalCheckout extends Component {
   handleOpen = e => this.setState({ modalOpen: true });
   handleClose = e => this.setState({ modalOpen: false });
 
-  handleDetailsModalClose = () => this.setState({ showDetailsModal: false });
+  handleDetailsModalClose = () => {
+    this.setState({ showDetailsModal: false });
+    window.location.reload();
+  } 
 
   handleSubmit(e) {
     const spotID = this.props.spot._id;
@@ -83,8 +86,8 @@ class ModalCheckout extends Component {
             <Modal.Content>
               <p><strong>Nome:</strong> {checkoutData.name}</p>
               <p><strong>Placa:</strong> {checkoutData.plate}</p>
+              <p><strong>Tempo Total:</strong> {checkoutData.durationTime}</p>
               <p><strong>Custo Final:</strong> R$ {checkoutData.finalCost}</p>
-              <p><strong>Tempo Total:</strong> {checkoutData.durationInHours} horas</p>
             </Modal.Content>
             <Modal.Actions>
               <Button onClick={this.handleDetailsModalClose} color='green'>Fechar</Button>

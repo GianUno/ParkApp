@@ -83,6 +83,9 @@ const SpotSchema = new mongoose.Schema({
   endTime: {
     type: Date
   },
+  durationTime: {
+    type: String,
+  },
   isFinished: {
     type: Boolean,
     default: false
