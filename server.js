@@ -35,6 +35,7 @@ if (process.env.CORS) {
 }
 
 app.use('/api/spots', require('./routes/spots'));
+app.use('/api/users', require('./routes/users'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 

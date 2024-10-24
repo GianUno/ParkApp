@@ -9,7 +9,7 @@ const Login = ({ server }) => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = () => {
-    axios.post(`${server}/api/login`, { email, password })
+    axios.post(`/api/users/login`, { email, password })
       .then(response => {
         localStorage.setItem('token', response.data.token);
         window.location.href = '/home';
@@ -26,7 +26,7 @@ const Login = ({ server }) => {
         <Form onSubmit={handleSubmit} error={!!errorMessage}>
           <Form.Input
             label="Email"
-            type="email"
+            type="text"
             value={email}
             onChange={e => setEmail(e.target.value)}
             required
