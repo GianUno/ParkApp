@@ -3,13 +3,13 @@ import { Button, Form, Message, Container, Header } from 'semantic-ui-react';
 import axios from 'axios';
 import './Login.css'; // Adicione o arquivo CSS para centralizar o conteúdo
 
-const Login = ({ server }) => {
-  const [email, setEmail] = useState('');
+const Login = () => {
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = () => {
-    axios.post(`/api/users/login`, { email, password })
+    axios.post(`/api/users/login`, { username, password })
       .then(response => {
         localStorage.setItem('token', response.data.token);
         window.location.href = '/home';
@@ -25,10 +25,10 @@ const Login = ({ server }) => {
         <Header as="h1" textAlign="center">PARK</Header>
         <Form onSubmit={handleSubmit} error={!!errorMessage}>
           <Form.Input
-            label="Email"
+            label="Username"
             type="text"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
+            value={username}
+            onChange={e => setUsername(e.target.value)}
             required
             fluid
           />

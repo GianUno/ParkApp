@@ -25,16 +25,17 @@ router.post('/register', async (req, res) => {
 // Login de usuário
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
+  let JWT_SECRET = 'teste';
 
   try {
     const user = await User.findOne({ username });
-    console.log(user);
+    console.log(username);
     if (!user) return res.status(400).json({ msg: 'Credenciais inválidas, user' });
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: 'Credenciais inválidas, password' });
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
     res.json({ token, msg: 'Login bem-sucedido!' });
   } catch (err) {
     res.status(500).json({ msg: 'Erro ao autenticar', error: err.message });
