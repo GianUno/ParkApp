@@ -1,0 +1,16 @@
+.register-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Faz o conteúdo ocupar toda a altura da tela */
+}
+
+h1 {
+  margin-bottom: 2rem;
+}
+
+form {
+  width: 100%;
+  max-width: 200px;
+}

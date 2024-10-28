@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Form, Button, Message } from 'semantic-ui-react';
+import { Container, Header, Form, Button, Message } from 'semantic-ui-react';
 import axios from 'axios';
+import './Register.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
@@ -24,6 +25,9 @@ const Register = () => {
   };
 
   return (
+    <Container text>
+      <div className='register-container'>
+      <Header as="h1" textAlign="center">PARK</Header>
     <Form onSubmit={handleSubmit}>
       <h2>Registro</h2>
       <Form.Input
@@ -43,8 +47,10 @@ const Register = () => {
       />
       {formError && <Message error header="Erro" content={formError} />}
       {formSuccess && <Message success header="Sucesso" content={formSuccess} />}
-      <Button color="green" type="submit">Registrar</Button>
+      <Button color="green" type="submit" fluid>Registrar</Button>
     </Form>
+    </div>
+    </Container>
   );
 };
 
